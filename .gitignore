@@ -19,3 +19,7 @@ doc/api/
 *.js_
 *.js.deps
 *.js.map
+/value_notifier/ios
+/value_notifier/linux
+/value_notifier/macos
+/value_notifier/windows
