@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:value_notifier/app/contatos_page.dart';
 import 'package:value_notifier/app/counter_controller.dart';
 
 class HomePage extends StatefulWidget {
@@ -41,6 +42,16 @@ class _HomePageState extends State<HomePage> {
                   style: Theme.of(context).textTheme.headline4,
                 );
               }
+            ),
+            const SizedBox(height: 30),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context, 
+                  MaterialPageRoute(builder: (context) => const ContatosPage())
+                );
+              }, 
+              child: const Text("List Builder")
             )
           ],
         ),
