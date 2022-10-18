@@ -1,13 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:value_notifier/app/contato_controller.dart';
+import 'package:value_notifier/app/contato_entity.dart';
 
 class ContatosPage extends StatelessWidget {
-  const ContatosPage({super.key});
+  ContatosPage({super.key});
+
+  final contatoController = ContatoController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Lista de contatos")),
       body: Column(
+        children: [
+          ValueListenableBuilder<List<ContatoEntity>>(
+            valueListenable: contatoController.contatosNotifier, 
+            builder: (context, contatos, child) {
+              return Text(contatos.length.toString());
+            }
+          )
+        ],
 
       ),
       floatingActionButton: FloatingActionButton.extended(
@@ -27,7 +39,8 @@ class ContatosPage extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      print("Salvar contato");
+                      contatoController.salvar(ContatoEntity(nome: "Rodrigo"));
+                      Navigator.of(context).pop();
                     }, 
                     child: const Text("Salvar")
                   )
