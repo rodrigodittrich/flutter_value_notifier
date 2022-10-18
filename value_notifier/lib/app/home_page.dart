@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:value_notifier/app/counter_controller.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -8,36 +9,44 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  final _counter = CounterController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Value Notifier"),
+        title: const Center(child: Text("Value Notifier")),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+            const Text('AnimatedBuilder'),
+            AnimatedBuilder(
+              animation: _counter,
+              builder: (context, child) {
+                return Text(
+                  '${_counter.value}',
+                  style: Theme.of(context).textTheme.headline4,
+                );
+              }
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
+            const SizedBox(height: 30),
+            const Text('ValueListenableBuilder'),
+            ValueListenableBuilder(
+              valueListenable: _counter, 
+              builder: (context, value, child){
+                return Text(
+                  '$value',
+                  style: Theme.of(context).textTheme.headline4,
+                );
+              }
+            )
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: _counter.increment,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
