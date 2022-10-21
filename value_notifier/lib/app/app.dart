@@ -12,6 +12,10 @@ class App extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.blueAccent,
         useMaterial3: true,
+        appBarTheme: const AppBarTheme(
+          centerTitle: true,
+          backgroundColor: Colors.blueAccent 
+        )
       ),
       debugShowCheckedModeBanner: false,
       home: const HomePage()

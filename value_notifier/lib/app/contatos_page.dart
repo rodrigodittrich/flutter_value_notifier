@@ -9,6 +9,8 @@ class ContatosPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController nomeController = TextEditingController();
+
     return Scaffold(
       appBar: AppBar(title: const Text("Lista de contatos")),
       body: Column(
@@ -16,7 +18,28 @@ class ContatosPage extends StatelessWidget {
           ValueListenableBuilder<List<ContatoEntity>>(
             valueListenable: contatoController.contatosNotifier, 
             builder: (context, contatos, child) {
-              return Text(contatos.length.toString());
+              if(contatos.isEmpty) return const Center(child: Text("Nenhum contato cadastrado"));
+              return ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: contatos.length,
+                itemBuilder: (context, item) {
+                  return Card(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("${contatos[item].nome}"),
+                        IconButton(
+                          onPressed: () {
+                            contatoController.deletar(contatos[item]);
+                          }, 
+                          icon: const Icon(Icons.delete)
+                        )
+                      ],
+                    )
+                  );
+                }
+              );
             }
           )
         ],
@@ -27,8 +50,11 @@ class ContatosPage extends StatelessWidget {
           showDialog(
             context: context, 
             builder: (context) {
+              nomeController.clear();
               return AlertDialog(
-                content: TextFormField(),
+                content: TextFormField(
+                  controller: nomeController,
+                ),
                 title: const Text("Novo contato"),
                 actions: [
                   ElevatedButton(
@@ -39,7 +65,7 @@ class ContatosPage extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      contatoController.salvar(ContatoEntity(nome: "Rodrigo"));
+                      contatoController.salvar(ContatoEntity(nome: nomeController.text));
                       Navigator.of(context).pop();
                     }, 
                     child: const Text("Salvar")
